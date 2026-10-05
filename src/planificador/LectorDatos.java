@@ -44,7 +44,7 @@ public class LectorDatos {
                 }
 
                 // Si pasa todos los controles, se añade a la lista
-                procesos.add(new Proceso(nombre, llegada, rafaga));
+                procesos.add(new Proceso(nombre, llegada, rafaga, numeroLinea));
             }
         } catch (IOException e) {
             System.out.println("Error al leer el archivo: " + e.getMessage());

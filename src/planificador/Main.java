@@ -56,7 +56,9 @@ public class Main {
                     fcfs.simular();
                     break;
                 case "sjf":
-                    // Aquí llamaremos a la clase SJF
+                    System.out.println("Ejecutando algoritmo SJF...");
+                    SJF sjf = new SJF(listaProcesos, traza);
+                    sjf.simular();
                     break;
                 case "rr":
                     // Aquí llamaremos a la clase Round Robin
