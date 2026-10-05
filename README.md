@@ -21,7 +21,7 @@ java -cp out planificador.Main datos/ejemplo_clase.csv rr 2 --traza
 4. En los argumentos (Program arguments), escribe la ruta del archivo, el algoritmo y el quantum si hace falta (por ejemplo: `datos/ejemplo_clase.csv todos 2`).
 5. En el directorio de trabajo (Working directory), selecciona la carpeta raíz del proyecto (`planificador-nexodata`).
 
-!![img.png](img.png)[Mi programa en ejecución](capturas/[nombre-de-tu-captura].png)
+!![img.png](img.png)
 
 ## 3. Diseño
 
