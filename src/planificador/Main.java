@@ -2,19 +2,9 @@ package planificador;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 
-/**
- * PSP · Tema 2 · Simulador de planificación para NexoData
- *
- * Punto de entrada. Este fichero YA ESTÁ HECHO: solo lee y comprueba los argumentos.
- * No cambies cómo se leen: el profesor ejecutará tu programa siempre así:
- *
- *   java planificador.Main <fichero.csv> <fcfs|sjf|rr|todos> [quantum] [--traza]
- *
- * Todo lo demás (modelo del proceso, lectura del CSV, algoritmos, métricas,
- * informe por consola...) lo diseñas y programas tú en este mismo paquete.
- */
 public class Main {
 
     public static void main(String[] args) {
@@ -45,31 +35,87 @@ public class Main {
         }
 
         try {
-            // 1. Leemos los procesos usando la clase de la Tarea 1
-            List<Proceso> listaProcesos = LectorDatos.leerFichero(fichero.toString());
+            List<Proceso> listaOriginal = LectorDatos.leerFichero(fichero.toString());
 
-            // 2. Según el algoritmo que pida el profesor en los argumentos, ejecutaremos uno u otro
             switch (algoritmo) {
                 case "fcfs":
-                    System.out.println("Ejecutando algoritmo FCFS...");
-                    FCFS fcfs = new FCFS(listaProcesos, traza);
+                    List<Proceso> pFcfs = clonarLista(listaOriginal);
+                    FCFS fcfs = new FCFS(pFcfs, traza);
                     fcfs.simular();
+                    imprimirMetricas(pFcfs, "FCFS");
                     break;
+
                 case "sjf":
-                    System.out.println("Ejecutando algoritmo SJF...");
-                    SJF sjf = new SJF(listaProcesos, traza);
+                    List<Proceso> pSjf = clonarLista(listaOriginal);
+                    SJF sjf = new SJF(pSjf, traza);
                     sjf.simular();
+                    imprimirMetricas(pSjf, "SJF (Sin desalojo)");
                     break;
+
                 case "rr":
-                    // Aquí llamaremos a la clase Round Robin
+                    List<Proceso> pRr = clonarLista(listaOriginal);
+                    RoundRobin rr = new RoundRobin(pRr, traza, quantum);
+                    rr.simular();
+                    imprimirMetricas(pRr, "Round Robin (q=" + quantum + ")");
                     break;
+
                 case "todos":
-                    // Aquí ejecutaremos los tres seguidos
+                    System.out.println("=== EJECUTANDO TODOS LOS ALGORITMOS ===");
+
+                    List<Proceso> t1 = clonarLista(listaOriginal);
+                    new FCFS(t1, traza).simular();
+                    imprimirMetricas(t1, "FCFS");
+
+                    List<Proceso> t2 = clonarLista(listaOriginal);
+                    new SJF(t2, traza).simular();
+                    imprimirMetricas(t2, "SJF");
+
+                    List<Proceso> t3 = clonarLista(listaOriginal);
+                    new RoundRobin(t3, traza, quantum).simular();
+                    imprimirMetricas(t3, "Round Robin (q=" + quantum + ")");
                     break;
             }
 
         } catch (Exception e) {
             System.err.println("Error durante la ejecución: " + e.getMessage());
+            e.printStackTrace();
         }
+    }
+
+    private static List<Proceso> clonarLista(List<Proceso> original) {
+        List<Proceso> copia = new ArrayList<>();
+        for (Proceso p : original) {
+            copia.add(new Proceso(p));
+        }
+        return copia;
+    }
+
+    private static void imprimirMetricas(List<Proceso> procesos, String titulo) {
+        System.out.println("\n--- MÉTRICAS: " + titulo + " ---");
+
+        int totalRetorno = 0;
+        int totalEspera = 0;
+        int totalRespuesta = 0;
+
+        for (Proceso p : procesos) {
+            int retorno = p.getFin() - p.getLlegada();
+            int espera = retorno - p.getRafaga();
+            int respuesta = p.getPrimeraVezCpu() - p.getLlegada();
+
+            totalRetorno += retorno;
+            totalEspera += espera;
+            totalRespuesta += respuesta;
+
+            System.out.println("Proceso " + p.getNombre() +
+                    " -> Fin: " + p.getFin() +
+                    ", Retorno: " + retorno +
+                    ", Espera: " + espera +
+                    ", Respuesta: " + respuesta);
+        }
+
+        int n = procesos.size();
+        System.out.println("Medias -> Retorno: " + (totalRetorno / (double)n) +
+                " | Espera: " + (totalEspera / (double)n) +
+                " | Respuesta: " + (totalRespuesta / (double)n) + "\n");
     }
 }
