@@ -51,8 +51,9 @@ public class Main {
             // 2. Según el algoritmo que pida el profesor en los argumentos, ejecutaremos uno u otro
             switch (algoritmo) {
                 case "fcfs":
-                    // Aquí llamaremos a la clase FCFS (Tarea 2)
-                    System.out.println("Ejecutando FCFS...");
+                    System.out.println("Ejecutando algoritmo FCFS...");
+                    FCFS fcfs = new FCFS(listaProcesos, traza);
+                    fcfs.simular();
                     break;
                 case "sjf":
                     // Aquí llamaremos a la clase SJF
