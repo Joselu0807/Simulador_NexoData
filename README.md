@@ -35,55 +35,8 @@ El proyecto está montado en Java orientado a objetos para que sea fácil de man
 ## 4. Verificación (tarea 4)
 
 ### 4.1 verificacion.csv resuelto a mano
-**Datos de entrada:**
-- Proceso A: Llegada = 0, Ráfaga = 3
-- Proceso B: Llegada = 1, Ráfaga = 2
-- Proceso C: Llegada = 3, Ráfaga = 2
+<img width="4336" height="6578" alt="Último análisis_ 9 oct 2026, 9_35_07_page-0001" src="https://github.com/user-attachments/assets/ee11d989-31a0-44b8-b149-f0d8ad6c7fc1" />
 
----
-
-### A. Algoritmo FCFS (First-Come, First-Served)
-Se atienden estrictamente por orden de llegada (A -> B -> C).
-
-* **Diagrama de Gantt:**
-  | A | A | A | B | B | C | C |
-  0   1   2   3   4   5   6   7
-
-* **Métricas individuales:**
-    - **Proceso A:** Fin = 3 | Retorno = 3 - 0 = 3 | Espera = 3 - 3 = 0
-    - **Proceso B:** Fin = 5 | Retorno = 5 - 1 = 4 | Espera = 4 - 2 = 2
-    - **Proceso C:** Fin = 7 | Retorno = 7 - 3 = 4 | Espera = 4 - 2 = 2
-
-* **Medias globales:**
-    - Retorno medio = (3 + 4 + 4) / 3 = **3.67**
-    - Espera media = (0 + 2 + 2) / 3 = **1.33**
-
----
-
-### B. Algoritmo Round Robin (Quantum q = 2)
-
-* **Evolución paso a paso:**
-    - **t = 0:** Llega A. Entra a la CPU. (Cola: vacía)
-    - **t = 1:** Llega B. A consume 1 unidad (le queda 1). En t=1 se agota el quantum de A, así que A vuelve a la cola y entra B. (Cola: A)
-    - **t = 2:** B sigue en CPU (le queda 1). (Cola: A)
-    - **t = 3:** Llega C. B termina de ejecutarse. Entra A a la CPU (le queda 1). (Cola: C)
-    - **t = 4:** A consume su última unidad y termina. Entra C a la CPU (le quedan 2). (Cola: vacía)
-    - **t = 5:** C sigue en CPU (le queda 1). (Cola: vacía)
-    - **t = 6:** C termina de ejecutarse. Fin de la simulación.
-
-* **Diagrama de Gantt:**
-  | A | A | B | B | A | C | C |
-  0   1   2   3   4   5   6   7
-
-* **Métricas individuales:**
-    - **Proceso A:** Fin = 4 | Retorno = 4 - 0 = 4 | Espera = 4 - 3 = 1
-    - **Proceso B:** Fin = 3 | Retorno = 3 - 1 = 2 | Espera = 2 - 2 = 0
-    - **Proceso C:** Fin = 7 | Retorno = 7 - 3 = 4 | Espera = 4 - 2 = 2
-
-* **Medias globales:**
-    - Retorno medio = (4 + 2 + 4) / 3 = **3.33**
-    - Espera media = (1 + 0 + 2) / 3 = **1.00**
-    - **Cambios de contexto:** 4
 ### 4.2 Comparación con el programa
 4.2 Comparación con el programa
 Los datos y cálculos que he sacado a mano encajan perfectamente con los resultados que devuelve el programa al ejecutarlo.
